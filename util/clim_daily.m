@@ -17,7 +17,7 @@ datavec = reshape(data,[numel(data)/sz(end) sz(end)]);
 varclimdayvec = nan([numel(data)/sz(end) 366]);
 for dd = 1:366
     ddinds = ismember(day(datetime(dvec),'dayofyear'),dd-nclim:dd+nclim);
-    varclimdayvec(:,dd) = nanmean(datavec(:,ddinds),2);
+    varclimdayvec(:,dd) = mean(datavec(:,ddinds),2,'omitnan');
 end
 
 varclimday = reshape(varclimdayvec,[sz(1:end-1), 366]);
