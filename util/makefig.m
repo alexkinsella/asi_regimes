@@ -11,4 +11,9 @@ function fig = makefig(width, height)
 
     % Position format: [left bottom width height]
     fig = figure('Color', [1 1 1], 'Position', [100 100 width height]);
+
+    % Light theme regardless of the system appearance (MATLAB R2025a and later)
+    if isprop(fig, 'Theme')
+        fig.Theme = 'light';
+    end
 end

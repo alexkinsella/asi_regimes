@@ -1,72 +1,25 @@
-% Histograms of seasonal ASI regime parameter
-% Alex Kinsella, February 2026
+% Figure 4: Histograms of seasonal ASI regime parameter
+%
+% Kinsella, A., and A. Mahadevan, 2026: A New Diagnostic of Air-Sea
+% Interaction Reveals Ocean Control of Turbulent Heat Flux in the South
+% Asian Summer Monsoon. J. Climate, 39, 6319-6333,
+% https://doi.org/10.1175/JCLI-D-26-0118.1.
+%
+% The histograms and percentages are computed over all grid points in the
+% domain, as in the published Fig. 4 and Section 3a. (The published
+% caption describes the Arabian Sea and Bay of Bengal regions only.)
+%
+% Inputs: P.asi_OAFlux (pipelines/asi_regimes_parameter_calculation.m)
+% Output: P.fig_dir/asi_regimes_fig4_histograms.png
+
+clear; clc
+
+P = asi_regimes_paths;
 
 %% Load ASI regimes
-load('/Volumes/proj/mahadevanlab/kinsella/output/asi_regimes/manuscript/asi_regimes_weighted_OAFlux_260210.mat')
+load(P.asi_OAFlux, 'asi_regimes')
 
 param_all = asi_regimes.param;
-
-% %% Spatial mask: Arabian Sea + Bay of Bengal
-% 
-% lonmatrix = repmat(asi_regimes.lon, [1 size(asi_regimes.param,[2 3])]);
-% latmatrix = permute( ...
-%     repmat(asi_regimes.lat, [1 size(asi_regimes.param,[1 3])]), ...
-%     [2 1 3]);
-% 
-% % Northern Hemisphere mask
-% NH_mask = latmatrix >= 0;
-% 
-% % Line separating Arabian Sea from land (5N,50E) to (26N,62E)
-% m = (62 - 50) / (26 - 5);
-% b = 50 - m * 5;
-% 
-% % Arabian Sea
-% reg1_mask = ...
-%     lonmatrix >= 50 & lonmatrix <= 80 & ...
-%     latmatrix >= 0  & latmatrix <= 26 & ...
-%     lonmatrix >= (m * latmatrix + b);
-% 
-% % Bay of Bengal
-% reg2_mask = ...
-%     lonmatrix >= 80 & lonmatrix <= 98 & ...
-%     latmatrix >= 0  & latmatrix <= 23;
-% 
-% AS_BoB_mask = reg1_mask | reg2_mask;
-% 
-% final_mask = true(size(latmatrix));
-% 
-% if use_AS_BoB_mask
-%     final_mask = final_mask & AS_BoB_mask;
-% end
-% 
-% if use_NH_mask
-%     final_mask = final_mask & NH_mask;
-% end
-
-%% Spatial mask: Arabian Sea + Bay of Bengal
-
-% Build 2D lon/lat grid
-[lon2d, lat2d] = meshgrid(asi_regimes.lon, asi_regimes.lat);
-lon2d = lon2d';
-lat2d = lat2d';
-
-% Slanted AS boundary (5N,50E) to (26N,62E)
-m = (62 - 50) / (26 - 5);
-b = 50 - m * 5;
-
-% Arabian Sea
-AS_mask = ...
-    lon2d >= 50 & lon2d <= 80 & ...
-    lat2d >= 5  & lat2d <= 26 & ...
-    lon2d >= (m * lat2d + b);
-
-% Bay of Bengal
-BoB_mask = ...
-    lon2d >= 80 & lon2d <= 98 & ...
-    lat2d >= 5  & lat2d <= 23;
-
-% Final regional mask
-region_mask = AS_mask | BoB_mask;
 
 %% Define bins
 edges   = 0:0.05:1;
@@ -76,18 +29,7 @@ bw      = diff(edges(1:2));
 %% Season day-of-year indices
 ind_FMAM = 32:151;       % Feb-Mar-Apr-May
 ind_JJAS = 152:273;      % Jun-Jul-Aug-Sep
-ind_ONDJ = [274:365 1:59];      % Oct-Nov-Dec-Jan
-
-nt = size(param_all,3);
-
-% Preallocate
-param_masked = nan(size(param_all));
-
-for dd = 1:nt
-    slice = param_all(:,:,dd);
-    slice(~region_mask) = NaN;
-    param_masked(:,:,dd) = slice;
-end
+ind_ONDJ = [274:365 1:31];      % Oct-Nov-Dec-Jan
 
 % Extract seasonal fields
 param_FMAM = param_all(:,:,ind_FMAM);
@@ -107,10 +49,10 @@ c_ONDJ = histcounts(param_ONDJ(:), edges, 'Normalization','probability');
 RGB = orderedcolors("gem");
 
 % Side-by-side bar offsets within each bin
-bar_width = 0.22;    % relative width (0–1)
+bar_width = 0.22;    % relative width (0-1)
 offset    = bw/4;    % shift in x-units
 
-fig = makefig;
+fig = makefig(1800, 987);  % window size of the published figure
 
 hold on
 b1 = bar(centers - offset, c_FMAM, bar_width, 'FaceColor', RGB(4,:), 'EdgeColor','none');
@@ -141,3 +83,14 @@ text(0.02, -0.1, sprintf('%s\n%s','Atm.','control'), ...
     'Interpreter','latex');
 makespruce(40);
 maketitle('Seasonal Distributions of ASI Parameter $P_o$',50)
+
+%% Print results
+
+fprintf(['FMAM: P_o<0.2 = %.1f%%, P_o>0.8 = %.1f%%\n' ...
+'JJAS: P_o<0.2 = %.1f%%, P_o>0.8 = %.1f%%\n' ...
+'ONDJ: P_o<0.2 = %.1f%%, P_o>0.8 = %.1f%%\n'], ...
+100*mean(param_FMAM(:)<0.2), 100*mean(param_FMAM(:)>0.8), ...
+100*mean(param_JJAS(:)<0.2), 100*mean(param_JJAS(:)>0.8), ...
+100*mean(param_ONDJ(:)<0.2), 100*mean(param_ONDJ(:)>0.8));
+
+export_figure(fig, P.fig_dir, 'asi_regimes_fig4_histograms')
