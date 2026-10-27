@@ -1,10 +1,12 @@
 # asi_regimes
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23694794.svg)](https://doi.org/10.5281/zenodo.23694794)
+
 MATLAB code accompanying
 
 > Kinsella, A., and A. Mahadevan, 2026: A New Diagnostic of Air–Sea Interaction Reveals Ocean Control of Turbulent Heat Flux in the South Asian Summer Monsoon. *J. Climate*, **39**, 6319–6333, https://doi.org/10.1175/JCLI-D-26-0118.1.
 
-The code runs the idealized stochastic model, processes the observational and reanalysis data, computes the air–sea interaction (ASI) regime parameter *P<sub>o</sub>*, and generates the figures, supplemental figure and supplemental video. Please cite the paper if you use this code.
+The code runs the idealized stochastic model, processes the observational and reanalysis data, computes the air–sea interaction (ASI) regime parameter *P<sub>o</sub>*, and generates the figures, supplemental figure and supplemental video. Please cite the paper if you use this code. Release v1.0.0, the version used for the paper, is archived on Zenodo at https://doi.org/10.5281/zenodo.23694794.
 
 ## Repository layout
 
