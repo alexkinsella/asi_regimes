@@ -25,7 +25,7 @@ Each script starts with a header that lists its inputs and outputs. Every script
 - MATLAB R2023a or later (`xregion` in Fig. 8). The code was tested with R2025b and R2026a.
 - Statistics and Machine Learning Toolbox (`corr`, `prctile`, `tcdf`).
 - Mapping Toolbox (`shaperead`, for the coastlines in Figs. 3 and 5).
-- Memory: the OAFlux pipelines run comfortably in 16 GB. The ERA5 parameter calculation (0.25° grid) needs tens of GB.
+- Memory: the OAFlux pipelines run comfortably in 16 GB. The ERA5 parameter calculation (0.25° grid) needs tens of GB (this can be lowered by parallelizing).
 
 No other toolboxes or File Exchange downloads are needed; the third-party code that is used is bundled in `util/` (see below).
 
