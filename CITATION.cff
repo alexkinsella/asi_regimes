@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: >-
+  If you use this code, please cite the paper listed under
+  preferred-citation.
+type: software
+title: "asi_regimes: code for Kinsella and Mahadevan (2026), J. Climate"
+abstract: >-
+  MATLAB code that runs the idealized stochastic model, processes the
+  observational and reanalysis data, computes the air-sea interaction (ASI)
+  regime parameter P_o, and generates the figures in Kinsella and
+  Mahadevan (2026).
+authors:
+  - family-names: Kinsella
+    given-names: Alex
+    affiliation: Woods Hole Oceanographic Institution
+    orcid: "https://orcid.org/0000-0003-3586-686X"
+repository-code: "https://github.com/alexkinsella/asi_regimes"
+license: MIT
+version: 1.0.0
+date-released: "2026-10-27"
+keywords:
+  - air-sea interaction
+  - turbulent heat flux
+  - sea surface temperature
+  - South Asian monsoon
+  - MATLAB
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Kinsella
+      given-names: Alex
+      affiliation: Woods Hole Oceanographic Institution
+      orcid: "https://orcid.org/0000-0003-3586-686X"
+    - family-names: Mahadevan
+      given-names: Amala
+      affiliation: Woods Hole Oceanographic Institution
+      orcid: "https://orcid.org/0000-0002-7522-4100"
+  title: >-
+    A New Diagnostic of Air–Sea Interaction Reveals Ocean Control of
+    Turbulent Heat Flux in the South Asian Summer Monsoon
+  journal: Journal of Climate
+  volume: 39
+  start: 6319
+  end: 6333
+  year: 2026
+  doi: 10.1175/JCLI-D-26-0118.1
